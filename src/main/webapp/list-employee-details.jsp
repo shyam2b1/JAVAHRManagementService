@@ -8,12 +8,12 @@
 <body>
 <head>
 	<link rel = "stylesheet" href = "css/style.css">
-	<link rel = "stylesheet" href = "css/add-employee-style.css">
+	<!-- <link rel = "stylesheet" href = "css/add-employee-style.css"> -->
 
 </head>
 	<div id = "wrapper">
 		<div id = "header">
-			<h2>HR Reporting Service</h2>
+			<h2><a href = "EmployeeControllerServlet">HR Reporting Service</a></h2>
 		</div>
 	
 	</div>

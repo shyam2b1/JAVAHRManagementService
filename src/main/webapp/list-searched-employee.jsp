@@ -8,12 +8,11 @@
 <body>
 <head>
 	<link rel = "stylesheet" href = "css/style.css">
-	<link rel = "stylesheet" href = "css/add-employee-style.css">
 
 </head>
 	<div id = "wrapper">
 		<div id = "header">
-			<h2>HR Reporting Service</h2>
+			<h2><a href = "EmployeeControllerServlet">HR Reporting Service</a></h2>
 		</div>
 	
 	</div>
@@ -22,7 +21,7 @@
 		<div id = "content">
 		
 		<%
-		if(theEmployeeList.isEmpty()){ 
+		if(theEmployeeList == null){ 
 		%>
 			<h3>Employee Not Found</h3>	
 			
@@ -63,7 +62,7 @@
 			
 			</table><br>
 			
-			<a href = "EmployeeControllerServlet">Back to List</a>
+			<a href = "search-employee-page.jsp">Back to Search Employee Page</a>
 			
 		</div>
 	</div>
