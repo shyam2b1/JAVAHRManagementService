@@ -3,25 +3,11 @@
 <head>
 	<link rel = "stylesheet" href = "css/style.css">
 	<link rel = "stylesheet" href = "css/add-employee-style.css">
-	
-	<!-- <script type="text/javascript">
-	function displayTextBox()
-	{
-		var employeeIDElem = document.getElementById("EmployeeID");
-		var lastNameElem = document.getElementById("lastName");
-		var jobTitleElem = document.getElementById("jobTitle");
-		var reportsToElem = document.getElementById("reportsTo");
-		console.log(employeeIDElem);
-		/* var employeeIDElementOption=employeeIDElem.options;
-		document.getElementById("result").value=option; */
-	}    
-</script> -->
-
 </head>
 <body>
 <div id = "wrapper">
 	<div id = "header">
-		<h2>HR Reporting Service</h2>
+		<h2><a href = "EmployeeControllerServlet">HR Reporting Service</a></h2>
 	</div>
 </div>
 
@@ -60,13 +46,16 @@
 			<td><label for = "jobTitle">Job Title:</label></td>
 			<td><input type = "text" id = "jobTitle" name = "jobTitle"></td>
 		</tr>
-		<tr>
+		<!-- <tr>
 			<td><label for = "report">Reporting To:</label></td>
 			<td><input type = "text" id = "report" name = "report"></td>
-		</tr>
+		</tr> -->
 		<tr>
-			<td><label for = "salary">Salary:</label></td>
-			<td><input type = "text" id = "salary" name = "salary"></td>
+			<td><label for = "from">Salary Range From:</label></td>
+			<td><input type = "text" id = "from" name = "from"></td>
+			
+			<td><label for = "to" id = "to">to</label></td>
+			<td><input type = "text" id = "to" name = "to"></td>
 		</tr>
 		<tr>
 			<td></td>

@@ -82,46 +82,76 @@ public class EmployeeControllerServlet extends HttpServlet {
 	}
 
 	private void searchEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception, IOException {
+		
 		if(request.getParameter("EmployeeID") != null && !request.getParameter("EmployeeID").isEmpty()) {
 			String employeeID = request.getParameter("EmployeeID");
 			Employee employee = employeeDao.getEmployee(employeeID);
 			List<Employee> employeesList = new ArrayList<>();
-			employeesList.add(employee);
-			System.out.println("employeesList is "+employeesList);
-			request.setAttribute("EMPLOYEE_LIST", employeesList);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
-			dispatcher.forward(request, response);
 			
-//			System.out.println("coming inside searchEmployee: "+employeeID);
-//			List<Employee> employeesListbyId = employeeDao.searchEmployeeById(employeeID);
-//			request.setAttribute("EMPLOYEE_LIST", employeesListbyId);
-//			RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
-//			dispatcher.forward(request, response);
-//			
+			if(!(employee == null)) {
+				
+				employeesList.add(employee);
+				System.out.println("employeesList is "+employeesList);
+				request.setAttribute("EMPLOYEE_LIST", employeesList);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			}else {
+				request.setAttribute("EMPLOYEE_LIST", null);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			}			
 		}
+		
 		if(request.getParameter("lastName") != null && !request.getParameter("lastName").isEmpty()) {
-			String thelastName = request.getParameter("lastName").strip();
-			System.out.println("lastName in Controller class: "+thelastName);
+			String thelastName = request.getParameter("lastName");
 			List<Employee> employeesListbyName = employeeDao.searchEmployeeByLastName(thelastName);
-			request.setAttribute("EMPLOYEE_LIST", employeesListbyName);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
-			dispatcher.forward(request, response);
+			
+			if(!(employeesListbyName.isEmpty())) {
+				request.setAttribute("EMPLOYEE_LIST", employeesListbyName);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			} else {
+				request.setAttribute("EMPLOYEE_LIST", null);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			}
 		}
+		
 		if(request.getParameter("jobTitle") != null && !request.getParameter("jobTitle").isEmpty()) {
 			String jobTitle = request.getParameter("jobTitle");
 			employeeDao.searchEmployeeByJobTitle(jobTitle);
-		}
-		if(request.getParameter("report") != null && !request.getParameter("report").isEmpty()) {
-			String reportTo = request.getParameter("report");
-			employeeDao.searchEmployeeByReportsTo(reportTo);
-		}
-		if(request.getParameter("salary") != null && !request.getParameter("salary").isEmpty()) {
-			String salary = request.getParameter("salary");
-			employeeDao.searchEmployeeBySalary(salary);
+			List<Employee> employeesListbyJobTitle = employeeDao.searchEmployeeByJobTitle(jobTitle);
+			
+			if(!(employeesListbyJobTitle.isEmpty())) {
+				request.setAttribute("EMPLOYEE_LIST", employeesListbyJobTitle);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			}else {
+				request.setAttribute("EMPLOYEE_LIST", null);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			}
 		}
 		
-		 
-		
+		if(request.getParameter("from") != null && !request.getParameter("from").isEmpty() && request.getParameter("to") != null && !request.getParameter("to").isEmpty()) {
+			String fromSalary = request.getParameter("from");
+			String toSalary = request.getParameter("to");
+			
+			List<Employee> employeesListbySalary = employeeDao.searchEmployeeBySalary(fromSalary, toSalary);
+			if(!(employeesListbySalary.isEmpty())) {
+				request.setAttribute("EMPLOYEE_LIST", employeesListbySalary);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			}else {
+				request.setAttribute("EMPLOYEE_LIST", null);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/list-searched-employee.jsp");
+				dispatcher.forward(request, response);
+			}
+		}
+//		if(request.getParameter("salary") != null && !request.getParameter("salary").isEmpty()) {
+//			String salary = request.getParameter("salary");
+//			employeeDao.searchEmployeeBySalary(salary);
+//		}		
 	}
 
 	private void updateEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception {

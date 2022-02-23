@@ -81,7 +81,6 @@ public class EmployeeDAO {
 			myStmt = myConn.prepareStatement(sql);
 			myStmt.setInt(1, theEmployeeId);
 			myRes = myStmt.executeQuery();
-//			System.out.println("myRes value: "+myRes);
 			while(myRes.next()) {
 				String firstName = myRes.getString("first_name");
 				String lastName = myRes.getString("last_name");
@@ -131,7 +130,6 @@ public class EmployeeDAO {
 				String reportsTo = myRes.getString("reports_to");
 				int salary = myRes.getInt("salary");
 				int employeeId = myRes.getInt("employee_id");
-//				System.out.println("employeeID from DB:"+employeeId);
 				
 				Employee employeeList = new Employee(firstName,lastName,email,jobTitle,reportsTo,salary,employeeId);
 				theEmployee.add(employeeList);
@@ -244,7 +242,6 @@ public class EmployeeDAO {
 			
 			//Prepare SQL Statement
 			myStmt = myConn.prepareStatement(sql);
-			System.out.println("lastName in Dao class: "+lastName);
 			
 			myStmt.setString(1, lastName);
 			
@@ -261,7 +258,6 @@ public class EmployeeDAO {
 				String reportsTo = myRes.getString("reports_to");
 				int salary = myRes.getInt("salary");
 				int employeeId = myRes.getInt("employee_id");
-				System.out.println("finallastName in DAO:"+finallastName);
 				
 				Employee employeeList = new Employee(firstName,finallastName,email,jobTitle,reportsTo,salary,employeeId);
 				theEmployee.add(employeeList);
@@ -274,8 +270,46 @@ public class EmployeeDAO {
 		
 	}
 
-	public void searchEmployeeByJobTitle(String jobTitle) {
-		// TODO Auto-generated method stub
+	public List<Employee> searchEmployeeByJobTitle(String jobTitle) throws Exception {
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRes = null;
+		List<Employee> theEmployee = new ArrayList<>();
+		
+		try {
+			// Get a DB connection
+			myConn = datasource.getConnection();
+			
+			//Prepare SQL query
+			String sql = "select * from employee where job_title = ?";
+			
+			//Prepare SQL Statement
+			myStmt = myConn.prepareStatement(sql);
+			
+			myStmt.setString(1, jobTitle);
+			
+			
+			//Executing SQL query
+			
+			myRes = myStmt.executeQuery();
+			
+			while(myRes.next()) {
+				String firstName = myRes.getString("first_name");
+				String finallastName = myRes.getString("last_name");
+				String email = myRes.getString("email");
+				String thejobTitle = myRes.getString("job_title");
+				String reportsTo = myRes.getString("reports_to");
+				int salary = myRes.getInt("salary");
+				int employeeId = myRes.getInt("employee_id");
+				
+				Employee employeeList = new Employee(firstName,finallastName,email,thejobTitle,reportsTo,salary,employeeId);
+				theEmployee.add(employeeList);
+			}
+		}finally {
+			//close JDBC objects.
+			closeConnection(myConn, myStmt, myRes);
+		}
+		return theEmployee;
 		
 	}
 
@@ -284,8 +318,44 @@ public class EmployeeDAO {
 		
 	}
 
-	public void searchEmployeeBySalary(String salary) {
-		// TODO Auto-generated method stub
+	public List<Employee> searchEmployeeBySalary(String fromSalary, String toSalary) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myPrep = null;
+		ResultSet myRes = null;
+		List<Employee> theEmployee = new ArrayList<>();
+		int fromSalaryToInt = Integer.parseInt(fromSalary);
+		int toSalaryInt = Integer.parseInt(toSalary);
+		try {
+			myConn = datasource.getConnection();
+			String sql = "select * from employee where salary between ? and ?";
+			
+			myPrep = myConn.prepareStatement(sql);
+			
+			myPrep.setInt(1, fromSalaryToInt);
+			myPrep.setInt(2, toSalaryInt);
+			
+			myRes = myPrep.executeQuery();
+			
+			while(myRes.next()) {
+				String firstName = myRes.getString("first_name");
+				String finallastName = myRes.getString("last_name");
+				String email = myRes.getString("email");
+				String thejobTitle = myRes.getString("job_title");
+				String reportsTo = myRes.getString("reports_to");
+				int salary = myRes.getInt("salary");
+				int employeeId = myRes.getInt("employee_id");
+				
+				Employee employeeList = new Employee(firstName,finallastName,email,thejobTitle,reportsTo,salary,employeeId);
+				theEmployee.add(employeeList);
+			}
+			
+		} finally {
+			closeConnection(myConn, myPrep, myRes);
+		}
+		
+		
+		return theEmployee;
 		
 	}
 
